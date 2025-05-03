@@ -17,10 +17,6 @@ export const links: Route.LinksFunction = () => [
     href: "https://fonts.gstatic.com",
     crossOrigin: "anonymous",
   },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-  },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -41,12 +37,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function loader({ context }: Route.LoaderArgs) {
-  return { message: context.cloudflare.env.VALUE_FROM_CLOUDFLARE };
+export function loader(args: Route.LoaderArgs) {
+  // 这里可以读 Cookie 做鉴权
+  // return {
+  //   message: args.request.headers.get('Cookie') || 'No Cookies'
+  // }
+  // return fetch('https://api.ipify.org?format=json')
+  //   .then(res => res.text())
+  //   .then(xs => {
+  //     return {
+  //       message: xs,
+  //     }
+  //   })
+  return { message: args.context.cloudflare.env.VALUE_FROM_CLOUDFLARE };
 }
 
 export default function App(props: Route.ComponentProps) {
   return <Outlet />;
+}
+
+export function HydrateFallback() {
+  return <p>Loading...</p>;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
