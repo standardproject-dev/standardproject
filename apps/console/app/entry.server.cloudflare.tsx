@@ -1,7 +1,11 @@
 import type { AppLoadContext, EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
-import { renderToReadableStream } from "react-dom/server";
+import ReactDOMServer from "react-dom/server";
+
+export function isSupport () {
+  return typeof ReactDOMServer.renderToReadableStream === "function";
+}
 
 export default async function handleRequest(
   request: Request,
@@ -13,7 +17,7 @@ export default async function handleRequest(
   let shellRendered = false;
   const userAgent = request.headers.get("user-agent");
 
-  const body = await renderToReadableStream(
+  const body = await ReactDOMServer.renderToReadableStream(
     <ServerRouter context={routerContext} url={request.url} />,
     {
       onError(error: unknown) {
