@@ -16,6 +16,7 @@ export default function YDocSize(props: Route.ComponentProps) {
 
   let size = 0
   size++
+  size++
   window.localStorage.setItem('ydoc-size', size.toString())
 
   React.useEffect(() => {
@@ -27,6 +28,7 @@ export default function YDocSize(props: Route.ComponentProps) {
   return (
     <div>
       <h1>YDoc Size</h1>
+      <p>Size: {size}</p>
       <Form className="flex flex-col gap-2">
       <TextField name="email" type="email" isRequired>
         <Label>Email</Label>

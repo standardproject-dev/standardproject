@@ -70,9 +70,42 @@ You can then promote a version to production after verification or roll it out p
 npx wrangler versions deploy
 ```
 
-## Styling
+# express 模式
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+用途
+
+- 在 Electron 作为 SSR 服务器使用
+- 支持部署到 Node 环境
+
+要启动 express 开发模
+
+```sh
+pnpm dev:express
+```
+
+构建 express 部署
+
+```sh
+pnpm build:express
+```
+
+Electron 预览
+
+```sh
+pnpm build:express && pnpm electron:preview
+```
+
+Electron 构建可执行文件
+
+```sh
+pnpm build:express && pnpm electron:package
+```
+
+Electron 打包 DMG
+
+```sh
+pnpm build:express && pnpm electron:make
+```
 
 ---
 

@@ -21,15 +21,16 @@ export default defineConfig(env => {
     )
   }
 
-  const build = IS_EXPRESS
+  const rollupOptions = IS_EXPRESS && env.isSsrBuild
     ? {
-      rollupOptions: env.isSsrBuild
-        ? {
-            input: "./express/app.ts",
-          }
-        : undefined,
-    }
+        input: "./express/app.ts",
+      }
     : undefined
+
+  const build = {
+    rollupOptions,
+    manifest: true,
+  }
   
   return {
     define: {

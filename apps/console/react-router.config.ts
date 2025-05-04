@@ -4,7 +4,7 @@ const IS_EXPRESS = process.env['BUILD_RUNTIME'] === 'express';
 
 export default {
   ssr: true,
-  buildDirectory: "build",
+  buildDirectory: IS_EXPRESS ? "build/express" : "build/cloudflare",
   future: {
     unstable_viteEnvironmentApi: IS_EXPRESS ? false : true,
 
