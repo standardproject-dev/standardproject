@@ -1,9 +1,14 @@
 import type { Config } from "@react-router/dev/config";
 
+const IS_EXPRESS = process.env['BUILD_RUNTIME'] === 'express';
+
 export default {
   ssr: true,
-  // node 构建时，需要先注释掉
-  // future: {
-  //   unstable_viteEnvironmentApi: true,
-  // },
+  buildDirectory: "build",
+  future: {
+    unstable_viteEnvironmentApi: IS_EXPRESS ? false : true,
+
+    // see https://github.com/tensorzero/tensorzero/pull/1717
+    unstable_optimizeDeps: true,
+  },
 } satisfies Config;
