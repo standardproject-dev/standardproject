@@ -31,6 +31,11 @@ const items = [
     icon: Calculator,
   },
   {
+    title: "Canvas UI",
+    url: "/canvas-ui",
+    icon: Calculator,
+  },
+  {
     title: "Search",
     url: "#",
     icon: Search,
