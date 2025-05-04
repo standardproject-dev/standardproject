@@ -3,10 +3,6 @@ import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
 import ReactDOMServer from "react-dom/server";
 
-export function isSupport () {
-  return typeof ReactDOMServer.renderToReadableStream === "function";
-}
-
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,

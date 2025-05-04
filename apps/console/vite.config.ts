@@ -1,30 +1,44 @@
-// import { reactRouter } from "@react-router/dev/vite";
-// import { cloudflare } from "@cloudflare/vite-plugin";
-// import tailwindcss from "@tailwindcss/vite";
-// import { defineConfig } from "vite";
-// import tsconfigPaths from "vite-tsconfig-paths";
-
-// export default defineConfig({
-//   plugins: [
-//     cloudflare({ viteEnvironment: { name: "ssr" } }),
-//     tailwindcss(),
-//     reactRouter(),
-//     tsconfigPaths(),
-//   ],
-// });
-
 import { reactRouter } from "@react-router/dev/vite";
+import { cloudflare } from "@cloudflare/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig(({ isSsrBuild }) => ({
-  build: {
-    rollupOptions: isSsrBuild
-      ? {
-          input: "./server/app.ts",
-        }
-      : undefined,
-  },
-  plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
-}));
+export default defineConfig(env => {
+
+  const IS_EXPRESS = process.env['BUILD_RUNTIME'] === 'express';
+  const IS_CLOUDFLARE = !IS_EXPRESS
+
+  const plugins = [
+    tailwindcss(),
+    reactRouter(),
+    tsconfigPaths(),
+  ]
+
+  if (IS_CLOUDFLARE) {
+    plugins.unshift(
+      cloudflare({ viteEnvironment: { name: "ssr" } }),
+    )
+  }
+
+  const build = IS_EXPRESS
+    ? {
+      rollupOptions: env.isSsrBuild
+        ? {
+            input: "./express/app.ts",
+          }
+        : undefined,
+    }
+    : undefined
+  
+  return {
+    define: {
+      'import.meta.env.BUILD_RUNTIME': JSON.stringify(process.env['BUILD_RUNTIME']),
+    },
+    optimizeDeps: {
+      force: true,
+    },
+    build,
+    plugins,
+  }
+})

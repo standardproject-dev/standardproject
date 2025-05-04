@@ -40,7 +40,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export function loader(args: Route.LoaderArgs) {
   // 这里可以读 Cookie 做鉴权
   return {
-    message: args.request.headers.get('Cookie') || 'No Cookies'
+    message: args.request.headers.get('Cookie') || 'No Cookies',
+    value: args.context.cloudflare?.env.VALUE_FROM_CLOUDFLARE,
   }
   // return fetch('https://api.ipify.org?format=json')
   //   .then(res => res.text())
