@@ -21,8 +21,8 @@ const items = [
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
+    title: "Dyanmic Logo",
+    url: "/dynamic-logo",
     icon: Inbox,
   },
   {
