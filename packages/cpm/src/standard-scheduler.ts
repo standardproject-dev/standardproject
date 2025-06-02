@@ -28,7 +28,6 @@ export class StandardScheduler implements Scheduler {
     this.file = file
     this.projectStartDate = startDate
 
-    // 使用深度优先图排序获取任务执行顺序
     const tasks = file.getSortedTasks()
     this.sortedTasks = tasks
     if (tasks.length === 0) {
@@ -69,7 +68,9 @@ export class StandardScheduler implements Scheduler {
       throw new Error('Missing project finish date')
     }
     this.projectFinishDate = projectFinishDate
+    // <original-java-code>
     // this.projectFinishDate = tasks.stream().map(Task::getEarlyFinish).filter(Objects::nonNull).max(Comparator.naturalOrder()).orElseThrow(() -> new CpmException("Missing early finish date"));
+    // </original-java-code>
 
     this.backwardPass(tasks)
     this.isBackwardPass = true;

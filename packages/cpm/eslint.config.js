@@ -65,6 +65,7 @@ export default tseslint.config(
       '@typescript-eslint/restrict-template-expressions': 'off',
 
       '@stylistic/ts/arrow-parens': [2, 'as-needed', { requireForBlockBody: true }],
+      '@stylistic/ts/semi': ['error', 'never'],
     },
   },
 )
