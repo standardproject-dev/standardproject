@@ -25,7 +25,7 @@ export interface Relation {
 }
 
 export class Relation {
-  static from(relation: Relation): Relation {
+  static of(relation: Relation): Relation {
     const ret = new Relation()
     Object.assign(ret, relation)
     return ret

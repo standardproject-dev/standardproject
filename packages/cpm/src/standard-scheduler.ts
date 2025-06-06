@@ -935,7 +935,7 @@ export class StandardScheduler implements Scheduler {
 
     for (const predecessor of predecessors) {
       for (const successor of successors) {
-        const newRelation = Relation.from({
+        const newRelation = Relation.of({
           ...relation,
           predecessorTask: predecessor,
           successorTask: successor,
