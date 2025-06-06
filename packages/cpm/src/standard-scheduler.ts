@@ -323,7 +323,7 @@ export class StandardScheduler implements Scheduler {
       return
     }
     
-    const successors = this.file.relationContainer.getSuccessors(task).filter(r => {
+    const successors = this.file.getSuccessors(task).filter(r => {
       return this.isTask(r.successorTask) && r.successorTask.actualFinish == null
     })
     const summaryTaskSuccessors = this.summaryTaskSuccessors.get(task);
@@ -374,7 +374,7 @@ export class StandardScheduler implements Scheduler {
           if (!latestFinish) {
             throw new Error('Missing latest finish date for task ' + task.guid)
           }
-          if (isAfter(lateFinish, latestFinish)) {
+          if (isAfter(lateFinish!, latestFinish)) {
             lateFinish = latestFinish
           }
           // <original-java-code>
@@ -386,7 +386,7 @@ export class StandardScheduler implements Scheduler {
         }
 
         case ConstraintType.FINISH_NO_LATER_THAN: {
-          if (isAfter(lateFinish, task.constraintDate!)) {
+          if (isAfter(lateFinish!, task.constraintDate!)) {
             lateFinish = task.constraintDate!
           }
           // <original-java-code>
@@ -889,7 +889,7 @@ export class StandardScheduler implements Scheduler {
    * Create temporary relationships between tasks to represent summary task logic.
    */
   private createSummaryTaskRelationships() {
-    this.file.relationContainer.relations
+    this.file.relations
       .filter(r => r.predecessorTask.isSummary || r.successorTask.isSummary)
       .forEach(it => {
         this.createSummaryTaskRelationship(it)

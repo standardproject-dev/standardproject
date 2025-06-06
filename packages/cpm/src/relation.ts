@@ -21,11 +21,13 @@ export interface Relation {
   readonly successorTask: Task
   readonly type: RelationType
   readonly lag: Duration
-  m_notes: string
+  readonly notes: string
 }
 
-export const Relation = new class RelationStub {
-  from(relation: Relation): Relation {
-    return { ...relation }
+export class Relation {
+  static from(relation: Relation): Relation {
+    const ret = new Relation()
+    Object.assign(ret, relation)
+    return ret
   }
-}()
+}
