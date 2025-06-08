@@ -39,23 +39,13 @@ export class StandardScheduler implements Scheduler {
     this.isBackwardPass = false
     this.forwardPass(tasks)
 
-    const summaryTasksHaveLogic = this.file.getTasks().some((t) => {
+    const summaryTasksHaveLogic = this.file.tasks.some((t) => {
       return t.isSummary && (t.predecessors.length > 0 || t.successors.length > 0)
     })
     if (summaryTasksHaveLogic) {
       this.createSummaryTaskRelationships()
-
-      const tasks = this.file.getSortedTasks((task) => {
-        const successors = task.successors
-        const summaryTaskSuccessors = this.summaryTaskSuccessors.get(task)
-        if (summaryTaskSuccessors) {
-          return [...successors, ...summaryTaskSuccessors]
-        }
-        return successors
-      })
-
+      const tasks = this.file.getSortedTasks([...this.summaryTaskSuccessors.values()].flat())
       this.sortedTasks = tasks
-
       this.forwardPass(tasks)
     }
 

@@ -31,6 +31,7 @@ export enum ConstraintType {
 export interface Task {
 
   guid: string
+  uniqueID: number
   type: TaskType
   mode: TaskMode
   isActive: boolean

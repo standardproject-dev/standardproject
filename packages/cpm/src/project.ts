@@ -1,7 +1,6 @@
 import { Graph, type AdjList } from './lib/graph'
 import { topologicalSort } from './lib/topological-sort'
 import type { Relation } from './relation'
-import { RelationContainer } from './relation-container'
 import type { Task } from './task'
 
 export class ProjectFile implements ProjectEntity {
@@ -10,25 +9,23 @@ export class ProjectFile implements ProjectEntity {
 
   readonly relations: Relation[] = []
 
-  getSortedTasks(_getSuccessors = this.defaultGetSuccessors): Task[] {
+  getSortedTasks(extraRelations: Relation[] = []): Task[] {
     // todo(hc): allow passing a custom getSuccessors function
-
     const adjList: AdjList<string> = {}
-    for (const relation of this.relations) {
+    for (const relation of this.relations.concat(extraRelations)) {
       const { predecessorTask, successorTask } = relation
       if (!adjList[predecessorTask.guid]) {
         adjList[predecessorTask.guid] = []
       }
       adjList[predecessorTask.guid].push(successorTask.guid)
     }
-
     const graph = Graph.fromAdjList(adjList)
     const sortResult = topologicalSort(graph)
     if (sortResult.cycle.length > 0) {
       throw new Error('Project contains cycle, cannot sort tasks')
     }
     return sortResult.sorted.map(guid => {
-      const task = this.tasks.find(task => task.guid === guid)
+      const task = this.getTask(guid)
       if (!task) {
         throw new Error(`Task with guid ${guid} not found`)
       }
@@ -38,10 +35,6 @@ export class ProjectFile implements ProjectEntity {
 
   getTask(guid: string) {
     return this.tasks.find(task => task.guid === guid)
-  }
-
-  getTasks() {
-    return this.tasks
   }
 
   getSuccessors(task: Task): Relation[] {
